@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inova</title>
+   <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+   <style type="text/css">
+       .device
+   </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row panel panel-primary">
+		<div class="panel-heading">
+        		<h3 class="panel-title">Devices</h3>
+    		</div>
+    		<div id="devices" class="panel-body"></div>            
+        </div>
+   </div>
+
+   <div class="container">
+        <div class="row panel panel-danger">
+		<div class="panel-heading">
+        		<h3 class="panel-title">Images</h3>
+    		</div>
+    		<div id="dockimgs" class="panel-body"></div>            
+        </div>
+   </div>
+
+   <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+   <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+   <script type="text/javascript">
+        var devices = [{uuid:"device1", title:"Device 1", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} },
+{uuid:"device2", title:"Device 2", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} },
+{uuid:"device3", title:"Device 3", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} }];
+    
+        $(document).ready(function(){
+                        for (var i=0;i<devices.length;i++)
+			{
+				var devicesHtml = '<div class="device col-xs-3 col-sm-2 col-lg-3 col-md-offset-1 panel panel-info">' +
+							'<div class="panel-heading">' +
+        							'<h3 class="panel-title">'+ devices[i].title +'</h3>' +
+    							'</div>' +
+							'<div class="panel-body">' +
+								'<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">UUID</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].uuid + '</div> </div>' +
+								'<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">IP:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].address.ip + '</div> </div>' +
+								'<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">Ports:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].address.ports.http + '</div> </div>' +
+								'<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">RAM:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].capacity.ram + '</div> </div>' +
+								'<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">RAM:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].capacity.cpu + '</div> </div>' +
+							'</div>' +
+						'</div>';
+                               $("#devices").append(devicesHtml);
+			       $("#dockimgs").append(devicesHtml);
+			}
+	});
+             
+   </script>
+</body>
+</html>
