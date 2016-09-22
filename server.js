@@ -8,6 +8,12 @@ var devices = {"data":[
    {uuid:"device3", title:"Device 3", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} }
 ]};
 
+var dockerimages= {"data":[
+   {uuid:"dockerimg1", title:"Docker Image 1"},
+   {uuid:"dockerimg2", title:"Docker Image 2"},
+   {uuid:"dockerimg3", title:"Docker Image 3"}
+]};
+
 app.all('*', function(req, res, next) {  
     res.header("Access-Control-Allow-Origin", "*");  
     res.header("Access-Control-Allow-Headers", "X-Requested-With");  
@@ -20,6 +26,11 @@ app.all('*', function(req, res, next) {
 app.get('/devices',function(req, res){
     res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
     res.send(devices)  
+})  
+
+app.get('/dockerimages',function(req, res){
+    res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
+    res.send(dockerimages)
 })  
 
 //app.get('/devices/:id',function(req, res){ 

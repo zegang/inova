@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inova</title>
-   <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+   <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"></link>
    <style type="text/css">
-       .device
    </style>
+<title>Inova</title>
 </head>
 <body>
     <div class="container">
@@ -15,7 +14,7 @@
 		<div class="panel-heading">
         		<h3 class="panel-title">Devices</h3>
     		</div>
-    		<div id="devices" class="panel-body"></div>            
+    		<div id="devicesContainer" class="panel-body"></div>            
         </div>
    </div>
 
@@ -24,16 +23,26 @@
 		<div class="panel-heading">
         		<h3 class="panel-title">Images</h3>
     		</div>
-    		<div id="dockimgs" class="panel-body"></div>            
+    		<div id="dockerimagesContainer" class="panel-body"></div>            
         </div>
    </div>
 
    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
    <script type="text/javascript">
-        var devices1 = [{uuid:"device1", title:"Device 1", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} },
-{uuid:"device2", title:"Device 2", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} },
-{uuid:"device3", title:"Device 3", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} }];
+	function allowDrop(ev){
+		ev.preventDefault();
+	}
+
+	function drag(ev){
+		ev.dataTransfer.setData("Text",ev.target.id);
+	}
+	
+	function drop(ev){
+		var data=ev.dataTransfer.getData("Text");
+                $(ev.target).append(data);
+		ev.preventDefault();
+	}
 
 	function getDevices(){
         	$.getJSON("http://localhost:8080/devices", function(result) {
@@ -42,10 +51,17 @@
 		});
 	}
 
+	function getDockerImages(){
+        	$.getJSON("http://localhost:8080/dockerimages", function(result) {
+			var dockerimages= result.data;
+			showDockerImages(dockerimages);
+		});
+	}
+
        function showDevices(devices){
 		for (var i=0;i<devices.length;i++)
                         {
-                                var devicesHtml = '<div class="device col-xs-3 col-sm-2 col-lg-3 col-md-offset-1 panel panel-info">' +
+                                var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device col-xs-3 col-sm-2 col-lg-3 col-md-offset-1 panel panel-info" >' +
                                                         '<div class="panel-heading">' +
                                                                 '<h3 class="panel-title">'+ devices[i].title +'</h3>' +
                                                         '</div>' +
@@ -55,16 +71,29 @@
                                                                 '<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">Ports:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].address.ports.http + '</div> </div>' +
                                                                 '<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">RAM:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].capacity.ram + '</div> </div>' +
                                                                 '<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">RAM:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].capacity.cpu + '</div> </div>' +
+                                                                '<div class="row" ondrop="drop(event)" ondragover="allowDrop(event)"> <div class="col-xs-4 col-sm-4 col-lg-4">Docker Images:</div> <div class="col-xs-8 col-sm-8 col-lg-8"></div> </div>' +
                                                         '</div>' +
                                                 '</div>';
-                               $("#devices").append(devicesHtml);
-                               $("#dockimgs").append(devicesHtml);
+                               $("#devicesContainer").append(devicesHtml);
                         }
 
+	}
+
+       function showDockerImages(dockerimages){
+		for (var i=0;i<dockerimages.length;i++)
+                        {
+                               var dockerimagesHtml = '<div id="'+ dockerimages[i].uuid +'" class="col-xs-3 col-sm-2 col-lg-3 col-md-offset-1 panel panel-info" draggable="true" ondragstart="drag(event)">' +
+                                                        '<div class="panel-heading">' +
+                                                                '<h3 class="panel-title">'+ dockerimages[i].title +'</h3>' +
+                                                        '</div>'+
+						'</div>';
+                               $("#dockerimagesContainer").append(dockerimagesHtml);
+			}
 	}
     
         $(document).ready(function(){
 		getDevices();
+		getDockerImages();
 	});
              
    </script>
