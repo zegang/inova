@@ -5,23 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"></link>
    <style type="text/css">
+       body{margin:0;padding:0;}
+       .header{margin-top:0;padding:0 50px;border-bottom:2px solid }
    </style>
 <title>Inova</title>
 </head>
 <body>
+    <div class="header page-header container-fluid">
+        <h1>Inova</h1>
+    </div>
     <div class="container">
-        <div class="row panel panel-primary">
+        <div class="row panel panel-info">
 		<div class="panel-heading">
-        		<h3 class="panel-title">Devices</h3>
+		<h3 class="panel-title" data-toggle="collapse" href="#devicesContainer" aria-expanded="true" aria-controls="devicesContainer">Devices</h3>
     		</div>
-    		<div id="devicesContainer" class="panel-body"></div>            
+    		<div id="devicesContainer" class="panel-body panel-collapse collapse in"></div>            
         </div>
    </div>
 
    <div class="container">
         <div class="row panel panel-danger">
 		<div class="panel-heading">
-        		<h3 class="panel-title">Images</h3>
+        		<h3 class="panel-title" data-toggle="collapse" href="#dockerimagesContainer" aria-expanded="true" aria-controls="dockerimagesContainer">Images</h3>
     		</div>
     		<div id="dockerimagesContainer" class="panel-body"></div>            
         </div>
@@ -40,7 +45,7 @@
 	
 	function drop(ev){
 		var data=ev.dataTransfer.getData("Text");
-                $(ev.target).append(data);
+		$('<tr><td>#</td><td>' + data + '</td></tr>').insertBefore($(ev.target).closest('tbody').children('tr').last());
 		ev.preventDefault();
 	}
 
@@ -61,7 +66,7 @@
        function showDevices(devices){
 		for (var i=0;i<devices.length;i++)
                         {
-                                var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device col-xs-3 col-sm-2 col-lg-3 col-md-offset-1 panel panel-info" >' +
+                                var devicesHtml = '<div id="'+ devices[i].uuid +'" class="col-xs-4 col-sm-4 col-lg-4 panel panel-info">' +
                                                         '<div class="panel-heading">' +
                                                                 '<h3 class="panel-title">'+ devices[i].title +'</h3>' +
                                                         '</div>' +
@@ -71,7 +76,13 @@
                                                                 '<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">Ports:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].address.ports.http + '</div> </div>' +
                                                                 '<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">RAM:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].capacity.ram + '</div> </div>' +
                                                                 '<div class="row"> <div class="col-xs-4 col-sm-4 col-lg-4">RAM:</div> <div class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].capacity.cpu + '</div> </div>' +
-                                                                '<div class="row" ondrop="drop(event)" ondragover="allowDrop(event)"> <div class="col-xs-4 col-sm-4 col-lg-4">Docker Images:</div> <div class="col-xs-8 col-sm-8 col-lg-8"></div> </div>' +
+								'<table class="table"><caption>Docker Images</caption>'+
+									'<thead><tr><th>#</th><th>UUID</th><th>Title</th><th>State</th><th>URL</th></tr></thead>'+
+									'<tbody class="docimgs">'+
+										'<tr><td>1</td><td>Mark</td><td>Otto</td><td>col-md-offset-1 col-md-offset-1 col-md-offset-1 </td></tr>'+
+										'<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5"> Drag to add docker images</td></tr>'+
+									'</tbody>'+
+    
                                                         '</div>' +
                                                 '</div>';
                                $("#devicesContainer").append(devicesHtml);
@@ -82,7 +93,7 @@
        function showDockerImages(dockerimages){
 		for (var i=0;i<dockerimages.length;i++)
                         {
-                               var dockerimagesHtml = '<div id="'+ dockerimages[i].uuid +'" class="col-xs-3 col-sm-2 col-lg-3 col-md-offset-1 panel panel-info" draggable="true" ondragstart="drag(event)">' +
+                               var dockerimagesHtml = '<div id="'+ dockerimages[i].uuid +'" class="col-xs-3 col-sm-2 col-lg-3 col-md-offset-1 panel panel-danger" draggable="true" ondragstart="drag(event)">' +
                                                         '<div class="panel-heading">' +
                                                                 '<h3 class="panel-title">'+ dockerimages[i].title +'</h3>' +
                                                         '</div>'+
