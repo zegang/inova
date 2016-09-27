@@ -3,15 +3,15 @@ var express = require('express');
 var app = express();
 
 var devices = {"data":[
-   {uuid:"device1", title:"Device 1", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} },
-   {uuid:"device2", title:"Device 2", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} },
-   {uuid:"device3", title:"Device 3", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"} }
+   {uuid:"device1", title:"Device 1", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"}, dockers:[{uuid:"dockerimg1"},{uuid:"dockerimg2"}], containers:[]},
+   {uuid:"device2", title:"Device 2", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"}, dockers:[{uuid:"dockerimg1"}], containers:[]},
+   {uuid:"device3", title:"Device 3", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"}, dockers:[{uuid:"dockerimg1"},{uuid:"dockerimg3"}], containers:[]}
 ]};
 
 var dockerimages= {"data":[
-   {uuid:"dockerimg1", title:"Docker Image 1"},
-   {uuid:"dockerimg2", title:"Docker Image 2"},
-   {uuid:"dockerimg3", title:"Docker Image 3"}
+   {uuid:"dockerimg1", title:"Docker Image 1", url:"https://hub.docker.com/_/redis/"},
+   {uuid:"dockerimg2", title:"Docker Image 2", url:"https://hub.docker.com/_/busybox/"},
+   {uuid:"dockerimg3", title:"Docker Image 3", url:"https://hub.docker.com/_/nginx/"}
 ]};
 
 app.all('*', function(req, res, next) {  
