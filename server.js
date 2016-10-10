@@ -2,17 +2,34 @@
 var express = require('express');
 var app = express();
 
-var devices = {"data":[
-   {uuid:"device1", title:"Device 1", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"}, dockers:[{uuid:"dockerimg1"},{uuid:"dockerimg2"}], containers:[]},
-   {uuid:"device2", title:"Device 2", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"}, dockers:[{uuid:"dockerimg1"}], containers:[]},
-   {uuid:"device3", title:"Device 3", address:{ip:"10.10.10.10", ports:{http:80}}, capacity:{ram:"10%", cpu:"50%"}, dockers:[{uuid:"dockerimg1"},{uuid:"dockerimg3"}], containers:[]}
-]};
+var devices = [
+   {"name": "droid", "uuid": "1475133249668276300",
+    "HWInfo":{
+              "address": {"host": "127.0.0.1" ,"mac": "08:90:a2:bf","port":0},
+              "capacity": {"cpu": {"cores": 2,"index": 50},"ram": 40960000,"storage": {"total": 8012000,"used": 3264000}}
+             },
+     "Images": { "application": {"name": "application","url": "docker://repository/branch/app/url","Config": "configuration string for application"},
+                 "plate": {"name": "plate","url": "docker://repository/branch/service/plate/url","Config": "configuration string for plate recognition"}
+                },
+     "job": {"name": "plate","status": "running","pid": 3610,"starttime": 14898738674989234,"Image": null}
+   },
+   {"name": "robot","uuid": "1475133250123458300",
+    "HWInfo":{
+              "address": {"host": "127.0.0.1" ,"mac": "08:90:a2:bf","port":0},
+              "capacity": {"cpu": {"cores": 2,"index": 50},"ram": 40960000,"storage": {"total": 8012000,"used": 3264000}}
+             },
+     "Images": { "application": {"name": "application","url": "docker://repository/branch/app/url","Config": "configuration string for application"},
+                 "plate": {"name": "plate","url": "docker://repository/branch/service/plate/url","Config": "configuration string for plate recognition"}
+                },
+     "job": {"name": "plate","status": "running","pid": 3610,"starttime": 14898738674989234,"Image": null}
+   }
+];
 
-var dockerimages= {"data":[
-   {uuid:"dockerimg1", title:"Docker Image 1", url:"https://hub.docker.com/_/redis/"},
-   {uuid:"dockerimg2", title:"Docker Image 2", url:"https://hub.docker.com/_/busybox/"},
-   {uuid:"dockerimg3", title:"Docker Image 3", url:"https://hub.docker.com/_/nginx/"}
-]};
+var images= [
+   {"name":"mirror", "url":"docker://repository/branch/app/url", "Config":"configuration string for application"},
+   {"name":"eye", "url":"docker://repository/branch/app/url", "Config":"configuration string for application"},
+   {"name":"application", "url":"docker://repository/branch/app/url", "Config":"configuration string for application"}
+];
 
 app.all('*', function(req, res, next) {  
     res.header("Access-Control-Allow-Origin", "*");  
@@ -28,9 +45,9 @@ app.get('/devices',function(req, res){
     res.send(devices)  
 })  
 
-app.get('/dockerimages',function(req, res){
+app.get('/images',function(req, res){
     res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
-    res.send(dockerimages)
+    res.send(images)
 })  
 
 //app.get('/devices/:id',function(req, res){ 
