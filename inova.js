@@ -1,6 +1,6 @@
 function getDevices(){
-    var url = "http://localhost:8080/devices";
-    //var url = "http://146.11.25.2:8010/devices";
+    //var url = "http://localhost:8080/devices";
+    var url = "http://146.11.25.2:8010/device";
     $.getJSON(url, function(result) {
             var devices = result;
             showDevices(devices);
@@ -8,10 +8,36 @@ function getDevices(){
 }
 
 function getDockerImages(){
-    $.getJSON("http://localhost:8080/images", function(result) {
+    var url = "http://146.11.25.2:8010/image";
+    $.getJSON(url, function(result) {
+            console.log(result);
             var dockerimages= result;
             showDockerImages(dockerimages);
             });
+}
+
+function deleteImage(imageName){
+    $.ajax({ url: "http://146.11.25.2:8010/image/" + imageName, 
+             type: "DELETE",
+             crossDomain:true,
+             success: function(result){ getDockerImages();}
+    });
+}
+
+function addImage(){
+    var obj = {"name":"albert2","uri":"docker://repository/branch/app/url","Config":"configuration string for application"};
+    $.ajax({
+        type: "POST",
+        url: "http://146.11.25.2:8010/image",
+        dataType: "json",
+        data: JSON.stringify(obj),
+        success: function(result) {
+            getDockerImages();
+            },
+        error: function(xhr){
+            console.log("Fail:" + xhr.message);
+            }
+    });
 }
 
 function showDevices(devices){
@@ -64,7 +90,7 @@ function showDockerImages(dockerimages){
         else htmlText += '" draggable="true" ondragstart="drag(event)">';
         htmlText += '<div class="panel-heading"><h3 class="panel-title">'+ dockerimages[i].name+'</h3></div>'+
             '<table class="table table-striped table-bordered"><tbody>'+
-            '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">URL</td><td class="col-xs-8 col-sm-8 col-lg-8">' + dockerimages[i].url + '</td></tr>' +
+            '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">URL</td><td class="col-xs-8 col-sm-8 col-lg-8">' + dockerimages[i].uri + '</td></tr>' +
             '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Config</td><td class="col-xs-8 col-sm-8 col-lg-8">' + dockerimages[i].Config + '</td></tr>' +
             '</tbody></table>'+ 
             '</div>';
