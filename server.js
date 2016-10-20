@@ -26,9 +26,10 @@ var devices = [
 ];
 
 var images= [
-   {"name":"mirror", "url":"docker://repository/branch/app/url", "Config":"configuration string for application"},
-   {"name":"eye", "url":"docker://repository/branch/app/url", "Config":"configuration string for application"},
-   {"name":"application", "url":"docker://repository/branch/app/url", "Config":"configuration string for application"}
+   {"name":"mirror", "uri":"docker://repository/branch/app/url/urlurlurlurl", "Config":"configuration string for application"},
+   {"name":"eye", "uri":"docker://repository/branch/app/url", "Config":"configuration string for application"},
+   {"name":"application", "uri":"docker://repository/branch/app/url", "Config":"configuration string for application"},
+   {"name":"application2", "uri":"docker://repository/branch/app/url", "Config":"configuration string for application application application"}
 ];
 
 app.all('*', function(req, res, next) {  
@@ -40,12 +41,12 @@ app.all('*', function(req, res, next) {
     next();  
 }); 
 
-app.get('/devices',function(req, res){
+app.get('/device',function(req, res){
     res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
     res.send(devices)  
 })  
 
-app.get('/images',function(req, res){
+app.get('/image',function(req, res){
     res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
     res.send(images)
 })  
@@ -75,4 +76,4 @@ app.get('/images',function(req, res){
 //    console.log(map)  
 //})  
 
-app.listen(8080);
+app.listen(8010);

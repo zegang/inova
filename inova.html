@@ -10,6 +10,8 @@
        .middle{margin:0 2% 0  2%;}
        #devicesContainer .panel{min-width:400px;padding:0;margin:5px 15px;}
        #dockerimagesContainer .panel{min-width:210px;padding:0;margin:5px 15px;}
+       .device-div{height:380px}
+       .image-div{height:150px}
    </style>
 <title>Inova</title>
 </head>
@@ -30,7 +32,10 @@
    <div class="container-fluid">
         <div class="row panel panel-danger">
 		<div class="panel-heading">
-       		<h3 class="panel-title" data-toggle="collapse" href="#dockerimagesContainer" aria-expanded="true" aria-controls="dockerimagesContainer">Images</h3>
+                    <div class="panel-title" style="height:30px">
+                        <div class="pull-left" data-toggle="collapse" href="#dockerimagesContainer" aria-expanded="true" aria-controls="dockerimagesContainer" style="width:100px">Images</div>
+                        <button type="button" class="pull-right btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                    </div>
     		</div>
     		<div id="dockerimagesContainer" class="panel-body panel-collapse collapse in"></div>            
         </div>

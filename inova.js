@@ -1,6 +1,6 @@
 function getDevices(){
-    //var url = "http://localhost:8080/devices";
-    var url = "http://146.11.25.2:8010/device";
+    var url = "http://localhost:8010/device";
+    //var url = "http://146.11.25.2:8010/device";
     $.getJSON(url, function(result) {
             var devices = result;
             showDevices(devices);
@@ -8,7 +8,8 @@ function getDevices(){
 }
 
 function getDockerImages(){
-    var url = "http://146.11.25.2:8010/image";
+    //var url = "http://146.11.25.2:8010/image";
+    var url = "http://localhost:8010/image";
     $.getJSON(url, function(result) {
             console.log(result);
             var dockerimages= result;
@@ -24,13 +25,13 @@ function deleteImage(imageName){
     });
 }
 
-function addImage(){
-    var obj = {"name":"albert2","uri":"docker://repository/branch/app/url","Config":"configuration string for application"};
+function addImage(imageObj){
+    imageObj = {"name":"albert2","uri":"docker://repository/branch/app/url","Config":"configuration string for application"};
     $.ajax({
         type: "POST",
         url: "http://146.11.25.2:8010/image",
         dataType: "json",
-        data: JSON.stringify(obj),
+        data: JSON.stringify(imageObj),
         success: function(result) {
             getDockerImages();
             },
@@ -44,7 +45,7 @@ function showDevices(devices){
     for (var i=0;i<devices.length;i++){
         var hwinfoTab = "hwinfo_"+devices[i].name;
         var imgTab = "images_"+devices[i].name; 
-        var devicesHtml = '<div id="'+ devices[i].uuid +'" class="col-xs-3 col-sm-3 col-lg-3 panel panel-info'; if(i>0) devicesHtml += ' col-md-offset-1">';
+        var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device-div col-xs-3 col-sm-3 col-lg-3 panel panel-info'; if(i>0) devicesHtml += ' col-md-offset-1">';
         else devicesHtml += '">';
         devicesHtml += '<div class="panel-heading"><h3 class="panel-title">'+ devices[i].name +'</h3></div>' +
             '<table class="table table-striped"><tbody>'+
@@ -72,11 +73,11 @@ function showDevices(devices){
 }
 
 function dockersHtml(dockers){
-    var dockersTable = '<table class="table"><caption class="text-left"><h4>Docker Images</h4></caption><thead><tr><th>#</th><th>Name</th><th>URL</th><th>Config</th><th></th></tr></thead>';
+    var dockersTable = '<table class="table"><caption class="text-left"><h4>Docker Images</h4></caption><thead><tr><th>#</th><th>Name</th><th></th></tr></thead>';
     dockersTable += '<tbody class="docimgs">';
     var i=1;
     for(var j in dockers){
-        dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td>'+ dockers[j].url +'</td><td>'+ dockers[j].Config +'</td><td><button class="img-op-btn" data-toggle="modal" data-target="#myModal" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
+        dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td><button class="img-op-btn" data-toggle="modal" data-target="#myModal" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
     }
     dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5"><button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus-sign"> Drag to add docker images</span></button></td></tr>';
     dockersTable += '</tbody></table>';
@@ -85,7 +86,7 @@ function dockersHtml(dockers){
 
 function showDockerImages(dockerimages){
     for (var i=0;i<dockerimages.length;i++){
-        var htmlText = '<div id="'+ dockerimages[i].name+'" class="col-xs-3 col-sm-3 col-lg-3 panel panel-danger ';
+        var htmlText = '<div id="'+ dockerimages[i].name+'" class="image-div col-xs-3 col-sm-3 col-lg-3 panel panel-danger ';
         if(i>0) htmlText += 'col-md-offset-1" draggable="true" ondragstart="drag(event)">';
         else htmlText += '" draggable="true" ondragstart="drag(event)">';
         htmlText += '<div class="panel-heading"><h3 class="panel-title">'+ dockerimages[i].name+'</h3></div>'+
