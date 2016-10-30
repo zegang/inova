@@ -1,23 +1,27 @@
+var devices = [];
+var images = [];
+var serverurl = "http://146.11.24.216:8010";
+
 function getDevices(){
    // var url = "http://localhost:8010/device";
-    var url = "http://146.11.24.216:8010/device";
+    var url = serverurl + "/device";
     $.getJSON(url, function(result) {
-            var devices = result;
+            devices = result;
             showDevices(devices);
             });
 }
 
 function getDockerImages(){
-    var url = "http://146.11.24.216:8010/image";
+    var url = serverurl + "/image";
    // var url = "http://localhost:8010/image";
     $.getJSON(url, function(result) {
-            var dockerimages= result;
-            showDockerImages(dockerimages);
+            images= result;
+            showDockerImages(images);
             });
 }
 
 function deleteImage(imageName){
-    $.ajax({ url: "http://146.11.24.216:8010/image/" + imageName, 
+    $.ajax({ url:  serverurl + "/image/" + imageName, 
              type: "DELETE",
              crossDomain:true,
              success: function(result){ getDockerImages();}
@@ -28,7 +32,7 @@ function addImage(imageObj){
     //imageObj = {"name":"albert2","uri":"docker://repository/branch/app/url","Config":"configuration string for application"};
     $.ajax({
         type: "POST",
-        url: "http://146.11.24.216:8010/image",
+        url: serverurl + "/image",
         dataType: "json",
         data: JSON.stringify(imageObj),
         success: function(result) {
@@ -112,10 +116,15 @@ function showDockerImages(dockerimages){
 }
 
 function editImage(imgName){
+   $("#imageAddModal_head").html("Eidt a Docker Image");
    $("#imgAddModal_add_btn").hide();
    $("#imgAddModal_delete_btn").show();
    $("#imgAddModal_save_btn").show();
+   $("#imgAddModal_title").attr('readonly', true);
    $("#imgAddModal_title").val(imgName);
+   var obj = images.find(function(element){return element.name == imgName;});
+   $("#imgAddModal_url").val(obj.uri);
+   $("#imgAddModal_Config").val(obj.Config);
    $("#imageAddModal").modal('show');
 }
 

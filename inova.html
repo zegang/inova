@@ -68,7 +68,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add a Docker Image</h4>
+        <h4 id="imageAddModal_head" class="modal-title">Add a Docker Image</h4>
       </div>
       <div class="modal-body">
           <div class="input-group">
@@ -87,7 +87,7 @@
       <div class="modal-footer">
         <button id="imgAddModal_delete_btn" type="button" class="btn btn-default" onclick="imgAddModal_delete_click()">Delete</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="imgAddModal_save_btn" type="button" class="btn btn-default">Save</button>
+        <button id="imgAddModal_save_btn" type="button" class="btn btn-default" onclick="imgAddModal_save_click()">Save</button>
         <button id="imgAddModal_add_btn" type="button" class="btn btn-default" onclick="imgAddModal_add_click()">Add</button>
       </div>
     </div>
@@ -113,6 +113,9 @@
 	}
 
         function showAddModal(){ 
+                $("#imageAddModal_head").html("Add a Docker Image");
+                $("#imageAddModal input").val("");
+                $("#imgAddModal_title").attr('readonly', false);
                 $("#imgAddModal_delete_btn").hide();
                 $("#imgAddModal_save_btn").hide();
                 $("#imgAddModal_add_btn").show();
@@ -132,6 +135,19 @@
                   type: "DELETE",
                   url: "http://146.11.24.216:8010/image/" + $("#imgAddModal_title").val(),
                   complete: function(result){ getDockerImages();}
+              });
+              $("#imageAddModal").modal('hide');
+        }
+
+        function imgAddModal_save_click(){
+              var imgName = $("#imgAddModal_title").val(); 
+              var obj = images.find(function(element){return element.name == imgName;});
+              $.ajax({
+                  type: "POST",
+                  url: serverurl + "/image/" + imgName,
+                  dataType: "json",
+                  data: JSON.stringify(obj),
+                  complete: function(){getDockerImages();}
               });
               $("#imageAddModal").modal('hide');
         }
