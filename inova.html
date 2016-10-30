@@ -10,8 +10,9 @@
        .middle{margin:0 2% 0  2%;}
        #devicesContainer .panel{min-width:400px;padding:0;margin:5px 15px;}
        #dockerimagesContainer .panel{min-width:210px;padding:0;margin:5px 15px;}
-       .device-div{height:380px}
+       .device-div{height:420px}
        .image-div{height:150px}
+       .input-group{margin:5px 0px;}
    </style>
 <title>Inova</title>
 </head>
@@ -34,7 +35,7 @@
 		<div class="panel-heading">
                     <div class="panel-title" style="height:30px">
                         <div class="pull-left" data-toggle="collapse" href="#dockerimagesContainer" aria-expanded="true" aria-controls="dockerimagesContainer" style="width:100px">Images</div>
-                        <button type="button" class="pull-right btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                        <button id="addimageBtn" type="button" class="pull-right btn btn-default" onclick="showAddModal()"><span class="glyphicon glyphicon-plus-sign"></span></button>
                     </div>
     		</div>
     		<div id="dockerimagesContainer" class="panel-body panel-collapse collapse in"></div>            
@@ -62,6 +63,37 @@
   </div>
 </div>
 
+<div class="modal fade" id="imageAddModal" tabindex="-2" role="dialog" aria-labelledby="imageAddModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add a Docker Image</h4>
+      </div>
+      <div class="modal-body">
+          <div class="input-group">
+               <span class="input-group-addon">Title</span>
+               <input id="imgAddModal_title" type="text" class="form-control" placeholder="docker image title">
+          </div>   
+          <div class="input-group">
+               <span class="input-group-addon">URL</span>
+               <input id="imgAddModal_url" type="text" class="form-control" placeholder="docker image url">
+          </div>   
+          <div class="input-group">
+               <span class="input-group-addon">Config</span>
+               <input id="imgAddModal_Config" type="text" class="form-control" placeholder="docker image config">
+          </div>   
+      </div>
+      <div class="modal-footer">
+        <button id="imgAddModal_delete_btn" type="button" class="btn btn-default" onclick="imgAddModal_delete_click()">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="imgAddModal_save_btn" type="button" class="btn btn-default">Save</button>
+        <button id="imgAddModal_add_btn" type="button" class="btn btn-default" onclick="imgAddModal_add_click()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
    <script src="./inova.js"></script>
@@ -79,6 +111,30 @@
 		$('<tr><td>#</td><td>' + data + '</td></tr>').insertBefore($(ev.target).closest('tbody').children('tr').last());
 		ev.preventDefault();
 	}
+
+        function showAddModal(){ 
+                $("#imgAddModal_delete_btn").hide();
+                $("#imgAddModal_save_btn").hide();
+                $("#imgAddModal_add_btn").show();
+                $("#imageAddModal").modal('show');
+        }
+
+        function imgAddModal_add_click(){
+                var imgObj = { "name": $("#imgAddModal_title").val(),
+                               "uri": $("#imgAddModal_url").val(),
+                               "Config": $("#imgAddModal_Config").val()
+                             };
+                addImage(imgObj);        
+        }
+
+        function imgAddModal_delete_click(imgName){
+              $.ajax({
+                  type: "DELETE",
+                  url: "http://146.11.24.216:8010/image/" + $("#imgAddModal_title").val(),
+                  complete: function(result){ getDockerImages();}
+              });
+              $("#imageAddModal").modal('hide');
+        }
 
         $(document).ready(function(){
 		getDevices();
