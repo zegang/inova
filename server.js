@@ -42,14 +42,14 @@ app.all('*', function(req, res, next) {
     next();  
 }); 
 
-app.get('/inova.js',function(req, res){
+app.get('/enova.js',function(req, res){
    res.writeHead(200, {"Content-Type": "text/javascript"});
-   fs.readFile("./inova.js", function(err,data){ res.end(data);});
+   fs.readFile("./enova.js", function(err,data){ res.end(data);});
 })
 
 app.get('/',function(req, res){
    res.writeHead(200, {"Content-Type": "text/html"});
-   fs.readFile("./inova.html", function(err,data){ res.end(data);});
+   fs.readFile("./enova.html", function(err,data){ res.end(data);});
 })
 
 app.get('/device',function(req, res){
