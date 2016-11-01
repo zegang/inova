@@ -1,6 +1,7 @@
 //var http = require('http');  
 var express = require('express');
 var app = express();
+var fs = require("fs");
 
 var devices = [
    {"name": "droid", "uuid": "1475133249668276300",
@@ -41,6 +42,16 @@ app.all('*', function(req, res, next) {
     next();  
 }); 
 
+app.get('/inova.js',function(req, res){
+   res.writeHead(200, {"Content-Type": "text/javascript"});
+   fs.readFile("./inova.js", function(err,data){ res.end(data);});
+})
+
+app.get('/',function(req, res){
+   res.writeHead(200, {"Content-Type": "text/html"});
+   fs.readFile("./inova.html", function(err,data){ res.end(data);});
+})
+
 app.get('/device',function(req, res){
     res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
     res.send(devices)  
@@ -76,4 +87,4 @@ app.get('/image',function(req, res){
 //    console.log(map)  
 //})  
 
-app.listen(8010);
+app.listen(8020);

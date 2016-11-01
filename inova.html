@@ -107,9 +107,16 @@
 	}
 	
 	function drop(ev){
-		var data=ev.dataTransfer.getData("Text");
-		$('<tr><td>#</td><td>' + data + '</td></tr>').insertBefore($(ev.target).closest('tbody').children('tr').last());
 		ev.preventDefault();
+		var imgName=ev.dataTransfer.getData("Text");
+                var obj = images.find(function(element){return element.name == imgName;});
+              $.ajax({
+                  type: "POST",
+                  url: serverurl + "/droid/" + imgName,
+                  dataType: "json",
+                  data: JSON.stringify(obj),
+                  complete: function(){$('<tr><td>#</td><td>' + imgName+ '</td></tr>').insertBefore($(ev.target).closest('tbody').children('tr').last());}
+              });
 	}
 
         function showAddModal(){ 
@@ -141,12 +148,15 @@
 
         function imgAddModal_save_click(){
               var imgName = $("#imgAddModal_title").val(); 
-              var obj = images.find(function(element){return element.name == imgName;});
+              var imgObj = { "name": imgName,
+                             "uri": $("#imgAddModal_url").val(),
+                             "Config": $("#imgAddModal_Config").val()
+                           };
               $.ajax({
-                  type: "POST",
+                  type: "PUT",
                   url: serverurl + "/image/" + imgName,
-                  dataType: "json",
-                  data: JSON.stringify(obj),
+                  contentType: "application/json",
+                  data: JSON.stringify(imgObj),
                   complete: function(){getDockerImages();}
               });
               $("#imageAddModal").modal('hide');
