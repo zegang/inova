@@ -48,6 +48,7 @@ function addImage(imageObj){
 
 function showDevices(devices){
     for (var i=0;i<devices.length;i++){
+        var jobTab = "job_"+devices[i].name;
         var hwinfoTab = "hwinfo_"+devices[i].name;
         var imgTab = "images_"+devices[i].name; 
         var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device-div col-xs-3 col-sm-3 col-lg-3 panel panel-info'; if(i>0) devicesHtml += ' col-md-offset-1">';
@@ -56,9 +57,22 @@ function showDevices(devices){
             '<table class="table table-striped"><tbody>'+
             '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">UUID</td><td class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].uuid + '</td></tr>' +
             '</tbody></table>' +
-            '<ul class="nav nav-tabs" role="tablist"><li role="presentation" class="active"><a href="#' + hwinfoTab +'" role="tab" aria-controls="'+hwinfoTab +'" aria-expanded="true">HWInfo</a></li><li role="presentation"><a href="#' + imgTab +'" role="tab">Images</a></li></ul>' +
-            '<div class="tab-content">'+
-            '<div id="' + hwinfoTab +'" class="tab-pane fade active in" role="tabpanel" aria-labelledby="' + hwinfoTab +'-tab">'+
+            '<ul class="nav nav-tabs" role="tablist"><li role="presentation" class="active"><a href="#' + jobTab +'" role="tab" aria-controls="'+ jobTab + '" aria-expanded="true">Job</a></li><li role="presentation"><a href="#' + hwinfoTab +'" role="tab">Hardware Info</a></li><li role="presentation"><a href="#' + imgTab +'" role="tab">Images</a></li></ul>' +
+            '<div class="tab-content">';
+        devicesHtml += '<div id="' + jobTab + '" class="tab-pane fade active in" role="tabpanel" aria-labelledby="' + jobTab + '-tab">';
+            if(devices[i].job && devices[i].job != null){
+                devicesHtml += '<table class="table table-striped"><tbody>'+ 
+                               '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Job Name:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.name +'</td></tr>' +
+                               '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Status:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.status +'</td></tr>' +
+                               '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Pid:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.pid +'</td></tr>' +
+                               '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Config:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.config +'</td></tr>' +
+                               '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Start Time:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.starttime +'</td></tr>' +
+                               '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Image:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.Image +'</td></tr>' +
+                               '</tbody></table>';
+            }
+       devicesHtml += '</div>';
+
+       devicesHtml += '<div id="' + hwinfoTab +'" class="tab-pane fade" role="tabpanel" aria-labelledby="' + hwinfoTab +'-tab">'+
             '<table class="table table-striped"><tbody>'+
             '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Host:</td><td class="col-xs-8 col-sm-8 col-lg-8">' + devices[i]["HWInfo"].address.host + '</td></tr>' +
             '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Mac:</td><td class="col-xs-8 col-sm-8 col-lg-8">' + devices[i]["HWInfo"].address.mac + '</td></tr>' +
@@ -86,7 +100,7 @@ function dockersHtml(dockers){
     dockersTable += '<tbody class="docimgs">';
     var i=1;
     for(var j in dockers){
-        dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td><button class="img-op-btn" data-toggle="modal" data-target="#myModal" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
+        dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td><button class="img-op-btn" onclick="showImgOptModal(\'' + dockers[j].name +'\')" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
     }
     dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5"><button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus-sign"> Drag to add docker images</span></button></td></tr>';
     dockersTable += '</tbody></table>';
@@ -126,6 +140,9 @@ function editImage(imgName){
    $("#imgAddModal_url").val(obj.uri);
    $("#imgAddModal_Config").val(obj.Config);
    $("#imageAddModal").modal('show');
+}
+
+function startJob(imgName){
 }
 
 function creatModalForm(){

@@ -44,19 +44,32 @@
    </div>
 
    <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="imgOptModal" tabindex="-1" role="dialog" aria-labelledby="imgOptModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="imgOptModalLabel">Image Operation</h4>
       </div>
       <div class="modal-body">
-        ...
+           <div class="input-group">
+               <span class="input-group-addon">Title</span>
+               <input id="imgOptModal_title" type="text" class="form-control" placeholder="docker image title">
+          </div>
+          <div class="input-group">
+               <span class="input-group-addon">URL</span>
+               <input id="imgOptModal_url" type="text" class="form-control" placeholder="docker image url">
+          </div>
+          <div class="input-group">
+               <span class="input-group-addon">Config</span>
+               <input id="imgOptModal_Config" type="text" class="form-control" placeholder="docker image config">
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Delete</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" onclick="imgOptModal_start_click()">Start</button>
+        <button type="button" class="btn btn-default" >Stop</button>
         <button type="button" class="btn btn-default">Save changes</button>
       </div>
     </div>
@@ -160,6 +173,20 @@
                   complete: function(){getDockerImages();}
               });
               $("#imageAddModal").modal('hide');
+        }
+
+        function showImgOptModal(imgName){
+            $("#imgOptModal_title").val(imgName);
+            var obj = images.find(function(element){return element.name == imgName;});
+            if(obj){
+                $("#imgOptModal_url").val(obj.uri);
+                $("#imgOptModal_Config").val(obj.Config);
+            }
+            $("#imgOptModal").modal('show');
+        }
+
+        function imgOptModal_start_click(){
+
         }
 
         $(document).ready(function(){
