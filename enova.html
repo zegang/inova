@@ -261,6 +261,30 @@
 
         }
 
+        job_stop_click(deviceName, jobName){
+            $.ajax({
+                  type: "DELETE",
+                  url: serverurl + "/job/" + deviceName + "/" + jobName + "/stop",
+                  complete: function(){}
+              });
+        }
+
+        job_pause_click(deviceName, jobName){
+            $.ajax({
+                  type: "PUT",
+                  url: serverurl + "/job/" + deviceName + "/" + jobName + "/pause",
+                  complete: function(){}
+              });
+        }
+
+        job_resume_click(deviceName, jobName){
+            $.ajax({
+                  type: "PUT",
+                  url: serverurl + "/job/" + deviceName + "/" + jobName + "/resume",
+                  complete: function(){}
+              });
+        }
+
         $(document).ready(function(){
 		getDevices();
 		getDockerImages();

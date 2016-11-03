@@ -69,6 +69,12 @@ function showDevices(devices){
                                '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Start Time:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.starttime +'</td></tr>' +
                                '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Image:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.Image +'</td></tr>' +
                                '</tbody></table>';
+                devicesHtml += '<div class="row">' + 
+                                    '<div class="col-xs-3 col-sm-3 col-lg-3"><button disabled="disabled" type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\')">Start</button></div>' +
+                                    '<div class="col-xs-3 col-sm-3 col-lg-3"><button type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\')">Stop</button></div>' +
+                                    '<div class="col-xs-3 col-sm-3 col-lg-3"><button type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\')">Pause</button></div>' +
+                                    '<div class="col-xs-3 col-sm-3 col-lg-3"><button disabled="disabled" type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')">Resume</button></div>' +
+                               '</div>';
             }
        devicesHtml += '</div>';
 
@@ -153,3 +159,4 @@ function startJob(imgName){
 function creatModalForm(){
 
 }
+
