@@ -225,7 +225,24 @@
            var devName=$("#imgOptModal_device").val();
            $.ajax({
                   type: "DELETE",
-                  url: serverurl + "/job/" + devName + "/" + escape(imgName) + "/start",
+                  url: serverurl + "/device/" + devName + "/" + escape(imgName), 
+                  complete: function(){}
+              });
+           $("#imgOptModal").modal('hide');
+        }
+
+        function imgOptModal_save_click(){
+           var imgName=$("#imgOptModal_title").val();
+           var devName=$("#imgOptModal_device").val();
+           var imgObj = { "name": imgName,
+                          "uri": $("#imgOptModal_url").val(),
+                          "Config": $("#imgOptModal_Config").val()
+                        };
+           $.ajax({
+                  type: "PUT",
+                  url: serverurl + "/device/" + devName + "/" + escape(imgName),
+                  contentType: "application/json",
+                  data: JSON.stringify(imgObj),
                   complete: function(){}
               });
            $("#imgOptModal").modal('hide');
