@@ -43,6 +43,32 @@
    </div>
    </div>
 
+  <!-- Modal -->
+<div class="modal fade" id="addImgToDevModal" tabindex="-1" role="dialog" aria-labelledby="addImgToDevModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="addImgToDevModalLabel">Add Image to Device</h4>
+      </div>
+      <div class="modal-body">
+           <div class="input-group">
+               <span class="input-group-addon">Device</span>
+               <input id="addImgToDevModal_device" type="text" class="form-control" placeholder="docker image title" readonly="true">
+          </div>
+           <div class="input-group">
+               <span class="input-group-addon">Title</span>
+               <input id="addImgToDevModal_title" type="text" class="form-control" placeholder="docker image title">
+          </div>
+      </div>
+       <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" onclick="addImgToDevModal_add_click(event)">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
    <!-- Modal -->
 <div class="modal fade" id="imgOptModal" tabindex="-1" role="dialog" aria-labelledby="imgOptModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -52,25 +78,24 @@
         <h4 class="modal-title" id="imgOptModalLabel">Image Operation</h4>
       </div>
       <div class="modal-body">
+              <input id="imgOptModal_device" type="hidden">
            <div class="input-group">
                <span class="input-group-addon">Title</span>
-               <input id="imgOptModal_title" type="text" class="form-control" placeholder="docker image title">
+               <input id="imgOptModal_title" type="text" class="form-control" placeholder="docker image title" readonly>
           </div>
           <div class="input-group">
                <span class="input-group-addon">URL</span>
-               <input id="imgOptModal_url" type="text" class="form-control" placeholder="docker image url">
+               <input id="imgOptModal_url" type="text" class="form-control" placeholder="docker image url" readonly>
           </div>
           <div class="input-group">
                <span class="input-group-addon">Config</span>
-               <input id="imgOptModal_Config" type="text" class="form-control" placeholder="docker image config">
+               <input id="imgOptModal_Config" type="text" class="form-control" placeholder="docker image config" readonly>
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-default" onclick="imgOptModal_delete_click()">Delete</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-default" onclick="imgOptModal_start_click()">Start</button>
-        <button type="button" class="btn btn-default" >Stop</button>
-        <button type="button" class="btn btn-default">Save changes</button>
       </div>
     </div>
   </div>
@@ -120,16 +145,14 @@
 	}
 	
 	function drop(ev){
-		ev.preventDefault();
+	        ev.preventDefault();
 		var imgName=ev.dataTransfer.getData("Text");
-                var obj = images.find(function(element){return element.name == imgName;});
-              $.ajax({
+                var deviceName = $(ev.target).children("input").val();
+                $.ajax({
                   type: "POST",
-                  url: serverurl + "/droid/" + imgName,
-                  dataType: "json",
-                  data: JSON.stringify(obj),
+                  url: serverurl + "/device/" + deviceName +"/" + imgName,
                   complete: function(){$('<tr><td>#</td><td>' + imgName+ '</td></tr>').insertBefore($(ev.target).closest('tbody').children('tr').last());}
-              });
+                });
 	}
 
         function showAddModal(){ 
@@ -175,7 +198,8 @@
               $("#imageAddModal").modal('hide');
         }
 
-        function showImgOptModal(imgName){
+        function showImgOptModal(deviceName, imgName){
+            $("#imgOptModal_device").val(deviceName);
             $("#imgOptModal_title").val(imgName);
             var obj = images.find(function(element){return element.name == imgName;});
             if(obj){
@@ -186,6 +210,37 @@
         }
 
         function imgOptModal_start_click(){
+           var imgName=$("#imgOptModal_title").val();
+           var devName=$("#imgOptModal_device").val();
+           $.ajax({
+                  type: "POST",
+                  url: serverurl + "/job/" + devName + "/" + escape(imgName) + "/start",
+                  complete: function(){}
+              });
+           $("#imgOptModal").modal('hide');
+        }
+
+        function imgOptModal_delete_click(){
+           var imgName=$("#imgOptModal_title").val();
+           var devName=$("#imgOptModal_device").val();
+           $.ajax({
+                  type: "DELETE",
+                  url: serverurl + "/job/" + devName + "/" + escape(imgName) + "/start",
+                  complete: function(){}
+              });
+           $("#imgOptModal").modal('hide');
+        }
+   
+        function addImgToDevModal_add_click(ev){
+            var imgName=$("#addImgToDevModal_title").val();
+            var devName=$("#addImgToDevModal_device").val();
+            var tableName = devName + "_img_table";
+            $.ajax({
+                  type: "POST",
+                  url: serverurl + "/device/" + devName + "/" + imgName,
+                  complete: function(){$('<tr><td>#</td><td>' + imgName+ '</td></tr>').insertBefore($('#' +tableName+ ' tbody').children('tr').last());}
+              });
+           $("#addImgToDevModal").modal('hide');
 
         }
 

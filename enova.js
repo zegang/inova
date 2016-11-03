@@ -85,7 +85,7 @@ function showDevices(devices){
             '</tbody></table>'+
             '</div>'+
             '<div id="' + imgTab + '" class="tab-pane fade" role="tabpanel" aria-labelledby="' + imgTab + '-tab">'+
-            '<div class="row"><div class="col-xs-12">'+ dockersHtml(devices[i].Images) + '</div></div>'+
+            '<div class="row"><div class="col-xs-12">'+ dockersHtml(devices[i].name, devices[i].Images) + '</div></div>'+
             '</div>'+
             '</div>'+
             '</div>';
@@ -95,14 +95,14 @@ function showDevices(devices){
     $('.nav-tabs a').click(function(e){ e.preventDefault();$(this).tab('show')});
 }
 
-function dockersHtml(dockers){
-    var dockersTable = '<table class="table"><thead><tr><th>#</th><th>Name</th><th></th></tr></thead>';
+function dockersHtml(deviceName, dockers){
+    var dockersTable = '<table id="'+ deviceName + '_img_table' +'" class="table"><thead><tr><th>#</th><th>Name</th><th></th></tr></thead>';
     dockersTable += '<tbody class="docimgs">';
     var i=1;
     for(var j in dockers){
-        dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td><button class="img-op-btn" onclick="showImgOptModal(\'' + dockers[j].name +'\')" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
+        dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td><button class="img-op-btn" onclick="showImgOptModal(\''+deviceName+ '\',\'' + dockers[j].name +'\')" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
     }
-    dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5"><button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus-sign"> Drag to add docker images</span></button></td></tr>';
+    dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5"><button type="button" class="btn btn-default btn-lg" onclick="add_image_btn_click(\''+ deviceName +'\')"><span class="glyphicon glyphicon-plus-sign"><input type="hidden" value="'+ deviceName +'"> Click to add docker images</span></button></td></tr>';
     dockersTable += '</tbody></table>';
     return dockersTable;
 }
@@ -140,6 +140,11 @@ function editImage(imgName){
    $("#imgAddModal_url").val(obj.uri);
    $("#imgAddModal_Config").val(obj.Config);
    $("#imageAddModal").modal('show');
+}
+
+function add_image_btn_click(deviceName){
+   $("#addImgToDevModal_device").val(deviceName);
+   $("#addImgToDevModal").modal('show');  
 }
 
 function startJob(imgName){
