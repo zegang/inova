@@ -261,7 +261,7 @@
 
         }
 
-        job_stop_click(deviceName, jobName){
+        function job_stop_click(deviceName, jobName){
             $.ajax({
                   type: "DELETE",
                   url: serverurl + "/job/" + deviceName + "/" + jobName + "/stop",
@@ -269,7 +269,7 @@
               });
         }
 
-        job_pause_click(deviceName, jobName){
+        function job_pause_click(deviceName, jobName){
             $.ajax({
                   type: "PUT",
                   url: serverurl + "/job/" + deviceName + "/" + jobName + "/pause",
@@ -277,7 +277,7 @@
               });
         }
 
-        job_resume_click(deviceName, jobName){
+        function job_resume_click(deviceName, jobName){
             $.ajax({
                   type: "PUT",
                   url: serverurl + "/job/" + deviceName + "/" + jobName + "/resume",
