@@ -52,6 +52,11 @@ app.get('/',function(req, res){
    fs.readFile("./enova.html", function(err,data){ res.end(data);});
 })
 
+app.get('/car',function(req, res){
+   res.writeHead(200, {"Content-Type": "text/html"});
+   fs.readFile("./car.html", function(err,data){ res.end(data);});
+})
+
 app.get('/device',function(req, res){
     res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
     res.send(devices)  
