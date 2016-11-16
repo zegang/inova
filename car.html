@@ -26,19 +26,20 @@
    <script type="text/javascript">
        function updateResult(result){
            var oldR = $("#carResult").val();
-           $("#carResult").val(oldR + result);
+           $("#carResult").val(oldR + "\n" + result);
        }
 
         function refreshPage(){
             var url = serverurl + "/device";
-            $.getJSON(url, function(result) {
-                updateResult(result);
-                        });
+            $.ajax({
+                url: url,
+                success: function(result) {updateResult(result)}
+            });
        }
 
         $(document).ready(function(){
                 refreshPage();
-                setInterval(refreshPage, 30000); 
+                setInterval(refreshPage, 5000); 
 	});
              
    </script>
