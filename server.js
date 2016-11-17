@@ -52,7 +52,7 @@ app.get('/',function(req, res){
    fs.readFile("./enova.html", function(err,data){ res.end(data);});
 })
 
-app.get('/car',function(req, res){
+app.get('/car/:deviceid',function(req, res){
    res.writeHead(200, {"Content-Type": "text/html"});
    fs.readFile("./car.html", function(err,data){ res.end(data);});
 })
