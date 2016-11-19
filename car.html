@@ -24,13 +24,31 @@
    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
    <script src="../enova.js"></script>
    <script type="text/javascript">
+       count = 0;
+
        function updateResult(result){
            var oldR = $("#carResult").val();
+           var n = new Date();
            if(result){
               try{
-              var resJson = $.parseJSON(result);
-              $("#carResult").val(resJson.job.result.replace(/-/g,'\n\t-') + "\n\n" + oldR);
-              }catch(e){ $("#carResult").val(result + "\n\n" + oldR);}
+                  var resJson = $.parseJSON(result);
+                  if(count > 2){
+                  $("#carResult").val(n.toUTCString() + "\n" + resJson.job.result.replace(/-/g,'\n\t-'));
+                  count = 0;
+                  }else{
+                  $("#carResult").val(n.toUTCString() + "\n" + resJson.job.result + "\n\n" + oldR);
+                  $("#carResult").val(n.toUTCString() + "\n" + resJson.job.result.replace(/-/g,'\n\t-') + "\n\n" + oldR);
+                  count++;
+                  }
+              }catch(e){ 
+                  if(count > 2) {
+                  $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
+                  count=0;
+                  }else{
+                  $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
+                  count++;
+                  }
+              }
            }
        }
 
@@ -40,7 +58,7 @@
             var url = serverurl + "/device/" + deviceId;
             $.ajax({
                 url: url,
-                success: function(result) {updateResult(result)}
+                success: function(result) {updateResult(result.trim())}
             });
        }
 
