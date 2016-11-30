@@ -47,6 +47,23 @@ app.get('/enova.js',function(req, res){
    fs.readFile("./enova.js", function(err,data){ res.end(data);});
 })
 
+app.get('/:resourceid',function(req, res){
+   //res.writeHead(200, {"Content-Type": "image/png"});
+   var id = req.params.resourceid;
+   var filetype = id.substring( id.lastIndexOf(".")+1 );
+   var contType = "";
+   switch(filetype){
+       case "css": contType="text/css";break;
+       case "js": contType="application/x-javascript";break;
+       case "jpg": contType="image/jpg";break;
+       case "png": contType="image/png";break;
+       default: contType="";
+   }
+   res.writeHead(200, {"Content-Type": contType});
+   fs.readFile("./"+  req.params.resourceid, function(err,data){ res.end(data);});
+})
+
+
 app.get('/',function(req, res){
    res.writeHead(200, {"Content-Type": "text/html"});
    fs.readFile("./enova.html", function(err,data){ res.end(data);});
@@ -65,6 +82,11 @@ app.get('/device',function(req, res){
 app.get('/image',function(req, res){
     res.set({'Content-Type':'text/json','Encodeing':'utf8'});  
     res.send(images)
+})  
+
+app.get('/download/:imageid',function(req, res){
+    var file = fs.createWriteStream("./download/" + req.params.imageid + ".tar.gz");
+    res.pipe(file);
 })  
 
 //app.get('/devices/:id',function(req, res){ 

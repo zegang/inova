@@ -59,29 +59,26 @@ function showDevices(devices){
                 var jobTab = "job_"+devices[i].name;
                 var hwinfoTab = "hwinfo_"+devices[i].name;
                 var imgTab = "images_"+devices[i].name; 
-                var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device-div col-xs-3 col-sm-3 col-lg-3 panel panel-info'; if(i>0) devicesHtml += ' col-md-offset-1">';
+                var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device-div col-xs-3 col-sm-3 col-lg-3 panel panel-primary'; if(i>0) devicesHtml += ' col-md-offset-1">';
                 else devicesHtml += '">';
-                devicesHtml += '<div class="panel-heading"><h3 class="panel-title">'+ devices[i].name +'</h3></div>' +
+                devicesHtml += '<div class="panel-heading"><span class="glyphicon glyphicon-inbox v-left"></span><h3 class="panel-title">'+ devices[i].name +'</h3></div>' +
                         '<table class="table table-striped"><tbody>'+
                         '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">UUID</td><td class="col-xs-8 col-sm-8 col-lg-8">' + devices[i].uuid + '</td></tr>' +
                         '</tbody></table>' +
                         '<ul class="nav nav-tabs" role="tablist"><li role="presentation" class="active"><a href="#' + jobTab +'" role="tab" aria-controls="'+ jobTab + '" aria-expanded="true">Job</a></li><li role="presentation"><a href="#' + hwinfoTab +'" role="tab">Hardware Info</a></li><li role="presentation"><a href="#' + imgTab +'" role="tab">Images</a></li></ul>' +
                         '<div class="tab-content">';
                 devicesHtml += '<div id="' + jobTab + '" class="tab-pane fade active in" role="tabpanel" aria-labelledby="' + jobTab + '-tab">';
-                if(devices[i].job && devices[i].job != null){
+                if(devices[i].job && devices[i].job != null && devices[i].job.name && devices[i].job.name.trim().length > 0){
                         devicesHtml += '<table class="table table-striped"><tbody>'+ 
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Job Name:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.name +'</td></tr>' +
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Status:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.status +'</td></tr>' +
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Pid:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.pid +'</td></tr>' +
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Config:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.config +'</td></tr>' +
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Start Time:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.starttime +'</td></tr>' +
-                                '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Image:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.Image +'</td></tr>' +
+                                '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Image:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.name+'</td></tr>' +
                                 '</tbody></table>';
                         devicesHtml += '<div class="row">' + 
-                                '<div class="col-xs-3 col-sm-3 col-lg-3"><button disabled="disabled" type="button" class="btn btn-default" onclick="job_start_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')">Start</button></div>' +
-                                '<div class="col-xs-3 col-sm-3 col-lg-3"><button type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')">Stop</button></div>' +
-                                '<div class="col-xs-3 col-sm-3 col-lg-3"><button type="button" class="btn btn-default" onclick="job_pause_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')" disabled>Pause</button></div>' +
-                                '<div class="col-xs-3 col-sm-3 col-lg-3"><button disabled="disabled" type="button" class="btn btn-default" onclick="job_resume_click(\''+ devices[i].name +'\',\''+ devices[i].job.name + '\',\'' + devices[i].job.name + '\')">Resume</button></div>' +
+                                '<div style="text-align:center"><button type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')">Stop</button></div>' +
                                 '</div>';
                 }
                 devicesHtml += '</div>';
@@ -110,13 +107,13 @@ function showDevices(devices){
 }
 
 function dockersHtml(deviceName, dockers){
-        var dockersTable = '<table id="'+ deviceName + '_img_table' +'" class="table"><thead><tr><th>#</th><th>Name</th><th></th></tr></thead>';
+        var dockersTable = '<table id="'+ deviceName + '_img_table' +'" class="table" style="max-height:280px;overflow:scroll;"><thead><tr><th>#</th><th>Name</th><th></th></tr></thead>';
         dockersTable += '<tbody class="docimgs">';
         var i=1;
         for(var j in dockers){
                 dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td><button class="img-op-btn" onclick="showImgOptModal(\''+deviceName+ '\',\'' + dockers[j].name +'\')" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
         }
-        dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5"><button type="button" class="btn btn-default btn-lg" onclick="add_image_btn_click(\''+ deviceName +'\')"><span class="glyphicon glyphicon-plus-sign"><input type="hidden" value="'+ deviceName +'"> Click to add docker images</span></button></td></tr>';
+        dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5" style="text-align:center"><button type="button" class="btn btn-default btn-lg" style="width:60%;" onclick="add_image_btn_click(\''+ deviceName +'\')"><span class="glyphicon glyphicon-plus-sign"><input type="hidden" value="'+ deviceName +'"></span><span style="margin-left:10%;">Add</span></button></td></tr>';
         dockersTable += '</tbody></table>';
         return dockersTable;
 }
@@ -124,21 +121,10 @@ function dockersHtml(deviceName, dockers){
 function showDockerImages(dockerimages){
         $("#dockerimagesContainer").empty();
         for (var i=0;i<dockerimages.length;i++){
-                var htmlText = '<div id="'+ dockerimages[i].name+'" class="image-div col-xs-3 col-sm-3 col-lg-3 panel panel-danger ';
-                if(i>0) htmlText += 'col-md-offset-1" draggable="true" ondragstart="drag(event)">';
-                else htmlText += '" draggable="true" ondragstart="drag(event)">';
-                htmlText += '<div class="panel-heading" ondblclick="editImage(\'' + dockerimages[i].name +'\')"><h3 class="panel-title">'+ dockerimages[i].name+'</h3></div>'+
-                        '<table class="table table-striped table-bordered"><tbody>'+
-                        '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">URL</td><td class="col-xs-8 col-sm-8 col-lg-8">' + dockerimages[i].uri + '</td></tr>' +
-                        '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Config</td><td class="col-xs-8 col-sm-8 col-lg-8">';
-                if(dockerimages[i].Config.length > 40){
-                        htmlText += '<abbr title="'+ dockerimages[i].Config+'">'+ dockerimages[i].Config.substring(1,35) +"...</abbr>";
-                }else{
-                        htmlText += dockerimages[i].Config;
-                }
-                htmlText += '</td></tr>' +
-                        '</tbody></table>'+ 
-                        '</div>';
+                var htmlText = '<div id="'+ dockerimages[i].name+'" class="image-div panel';
+                htmlText += '" draggable="true" ondragstart="drag(event)">';
+                htmlText += '<div class="panel-heading" ondblclick="editImage(\'' + dockerimages[i].name +'\')"><span class="glyphicon glyphicon-dashboard v-left"></span><h3 class="panel-title">'+ dockerimages[i].name+'</h3></div>';
+                htmlText += '</div>';
                 $("#dockerimagesContainer").append(htmlText);
         }
 }
