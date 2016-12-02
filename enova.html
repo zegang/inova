@@ -109,6 +109,10 @@
                <span class="input-group-addon">Config</span>
                <input id="imgOptModal_Config" type="text" class="form-control" placeholder="docker image config" readonly>
           </div>
+          <div class="input-group">
+               <span class="input-group-addon">Feedback</span>
+               <input id="imgOptModal_feedback" type="text" class="form-control" placeholder="docker image feedback url" readonly>
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" onclick="imgOptModal_delete_click()">Delete</button>
@@ -138,6 +142,10 @@
           <div class="input-group">
                <span class="input-group-addon">Config</span>
                <input id="imgAddModal_Config" type="text" class="form-control" placeholder="docker image config">
+          </div>   
+          <div class="input-group">
+               <span class="input-group-addon">Feedback</span>
+               <input id="imgAddModal_feedback" type="text" class="form-control" placeholder="docker image feedback url">
           </div>   
       </div>
       <div class="modal-footer">
@@ -169,7 +177,7 @@
                 $.ajax({
                   type: "POST",
                   url: serverurl + "/device/" + deviceName +"/" + escape(imgName),
-                  complete: function(){$('<tr><td>#</td><td>' + imgName+ '</td><td><button class="img-op-btn" onclick="showImgOptModal(\''+deviceName+ '\',\'' + imgName +'\')" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>').insertBefore($(ev.target).closest('tbody').children('tr').last());}
+                  complete: function(){$('<tr><td>#</td><td>' + imgName+ '</td><td><button class="img-op-btn" onclick="showImgOptModal(\''+deviceName+ '\',\'' + imgName +'\')" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>').insertBefore($(ev.target).closest('tbody').children('tr').last());refreshPage();}
                 });
 	}
 
@@ -204,7 +212,8 @@
               var imgName = $("#imgAddModal_title").val(); 
               var imgObj = { "name": imgName,
                              "uri": $("#imgAddModal_url").val(),
-                             "Config": $("#imgAddModal_Config").val()
+                             "Config": $("#imgAddModal_Config").val(),
+                             "feedback": $("#imgAddModal_feedback").val()
                            };
               $.ajax({
                   type: "PUT",
@@ -223,6 +232,7 @@
             if(obj){
                 $("#imgOptModal_url").val(obj.uri);
                 $("#imgOptModal_Config").val(obj.Config);
+                $("#imgOptModal_feedback").val(obj.feedback);
             }
             $("#imgOptModal").modal('show');
         }
@@ -233,7 +243,7 @@
            $.ajax({
                   type: "POST",
                   url: serverurl + "/job/" + devName + "/" + escape(imgName) + "/start",
-                  complete: function(){}
+                  complete: function(){refreshPage();}
               });
            $("#imgOptModal").modal('hide');
         }
@@ -247,6 +257,7 @@
                   complete: function(){refreshPage();}
               });
            $("#imgOptModal").modal('hide');
+           refreshPage();
         }
 
         function imgOptModal_save_click(){

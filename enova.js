@@ -77,8 +77,10 @@ function showDevices(devices){
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Start Time:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.starttime +'</td></tr>' +
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Image:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.name+'</td></tr>' +
                                 '</tbody></table>';
-                        devicesHtml += '<div class="row">' + 
-                                '<div style="text-align:center"><button type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')">Stop</button></div>' +
+                        devicesHtml += '<div class="row" style="padding;0;margin:0;text-align:center;">';
+                                var runningImage= devices[i].Images.find(function(element){return element.name == devices[i].job.name;}); 
+                                '<a class="btn btn-default" role="button" href="'+ runningImage.feedback + "/" + devices[i].name +'" target="_blank">Feedback</a>' +
+                                '<button type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')">Stop</button>' +
                                 '</div>';
                 }
                 devicesHtml += '</div>';
@@ -139,6 +141,7 @@ function editImage(imgName){
         var obj = images.find(function(element){return element.name == imgName;});
         $("#imgAddModal_url").val(obj.uri);
         $("#imgAddModal_Config").val(obj.Config);
+        $("#imgAddModal_feedback").val(obj.feedback);
         $("#imageAddModal").modal('show');
 }
 

@@ -81,7 +81,7 @@
               tracedCount = 0;
               isontrace = false;
            }else{
-              plate =  $("#plateInput").val().trim().toUpperCase();
+              plate =  $("#plateInput").val().trim();
               if(plate == ""){
                  isontrace = false;
                  return;
@@ -99,35 +99,47 @@
            if(result){
               try{
                   var resJson = $.parseJSON(result);
-                  if(count > 2){
-                  $("#carResult").val(n.toUTCString() + "\n" + resJson.job.result.replace(/-/g,'\n\t-'));
-                  count = 0;
+                  var firstL = resJson.job.result.indexOf("-");
+                  var secondL = resJson.job.result.indexOf("-",firstL+1);
+                  var rstToShow = n.toUTCString() + "\t";
+                  if ( secondL > -1 && firstL != secondL){
+                      rstToShow += resJson.job.result.substring(firstL + 1, secondL).trim();
                   }else{
-                  $("#carResult").val(n.toUTCString() + "\n" + resJson.job.result + "\n\n" + oldR);
-                  $("#carResult").val(n.toUTCString() + "\n" + resJson.job.result.replace(/-/g,'\n\t-') + "\n\n" + oldR);
-                  count++;
+                  }
+                       
+                     
+                  if(count > 2){
+                      $("#carResult").val(rstToShow);
+                      count = 0;
+                  }else{
+                      $("#carResult").val(rstToShow + "\n" + oldR);
+                      count++;
                   }
 
                   if(isontrace){
-                      if(resJson.job.result.indexOf(plate) > -1){
-                          var location = resJson.job.result.substring(resJson.job.result.lastIndexOf("-")+1);
-                          var traceHistory = n.toUTCString() + "\t" + plate +"\t" + location;
-                          if(tracedCount < 20){
-                              traceHistory += "\n" + $("#carTraceResult").val();   
-                          }else{
-                              tracedCount = 0;
-                          }
-                          tracedCount++;
-                          $("#carTraceResult").val(traceHistory);
+                      var platesLocation= resJson.job.result.substring(resJson.job.result.indexOf("-")+1);
+                      var location = platesLocation.substring(platesLocation.lastIndexOf("-") + 1);
+                      var regexp = new RegExp("\\w*" + plate + "\\w*", "ig");
+                      var traceHistory = n.toUTCString() + "\t" + location;
+                      while( (tmp = regexp.exec(platesLocation)) != null){
+                          traceHistory += "\n\t" + tmp; 
                       }
+                      if(tracedCount < 20){
+                          traceHistory += "\n" + $("#carTraceResult").val();   
+                      }else{
+                          tracedCount = 0;
+                      }
+                      tracedCount++;
+                      $("#carTraceResult").val(traceHistory);
+
                   }
               }catch(e){ 
                   if(count > 2) {
-                  $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
-                  count=0;
+                      $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
+                      count=0;
                   }else{
-                  $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
-                  count++;
+                      $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
+                      count++;
                   }
               }
            }
