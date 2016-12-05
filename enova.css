@@ -1,18 +1,25 @@
 /* document skeleton */
-body{margin:0;padding:0;width:100%;height:100%;}
-.device-div{height:420px}
-.device-div > .panel-heading{background-image:none;background-color:rgba(0, 37, 97, 1) !important;}
-.images-div{width:96%;margin:0 2% 0 2%;box-shadow:10px 10px 5px #888888;}
-.image-div{height:150px;border-color:rgba(127, 194, 66, 1);}
+html{width:100%;height:100%;}
+body{margin:0;padding:0;width:100%;height:99%;}
+
+.header{margin-top:0;padding:0 50px 0px 50px;border:0;}
+.header_line{width:100%;height:5px;background-image:url(ericssonline.png);background-size:100% 100%;background-repeat:no-repeat;}
+
+.middle{height:80%;width:96%;padding:0;margin:20px 2% 0 2%;}
 
 
 /* panel */
-.panel-blue{}
+.panel{padding:0;margin:0;}
+.panel-heading{text-align:center;}
+.panel-blue{border-color:rgba(0, 37, 97, 1);}
 .panel-blue > .panel-heading{text-align:center;background-image:none;background-color:rgba(0, 37, 97, 1);color:white;}
-.panel-grey{}
-.panel-grey > .panel-heading{}
-.panel-green{}
+.panel-grey{border-color:rgba(244, 244, 244, 1);}
+.panel-grey > .panel-heading{background-color:rgba(244, 244, 244, 1);font-family:"Ericsson Capital TT";}
+.panel-green{border-color:rgba(127, 194, 66, 1);}
 .panel-green > .panel-heading{text-align:center;background-image:none;background-color:rgba(127, 194, 66, 1);color:white;}
+.panel-purple{width:100%;height:100%;border-color:rgba(123, 6, 100, 1);}
+.panel-purple > .panel-heading{height:40px;text-align:center;background-image:none;background-color:rgba(123, 6, 100, 1);color:white;}
+
 
 
 /* fonts */

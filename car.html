@@ -6,13 +6,19 @@
    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
    <link href="../enova.css" rel="stylesheet" />
    <style type="text/css">
-       .header{margin-top:0;padding:0 50px 0px 50px;border:0 !important;}
-       .header_line{width:100%;height:5px;background-image:url(../ericssonline.png);background-size:100% 100%;background-repeat:no-repeat;}
-       .middle{margin:5px 2% 0 10px;height:450px;width:95%;}
-       .middle-left{width:450px;margin-left:40px;height:100%;float:left;}
-       .middle-right{width:450px;height:100;margin-left:50px;float:left;}
-       .camero-result{height:450px;}
-       .car-trace-result{height:450px;}
+       .middle-left{width:20%;height:100%;float:left;background-image:url('../carlogo3.jpg');background-repeat:no-repeat;background-size:100% 100%;}
+       .middle-middle{width:38%;margin-left:2%;height:100%;float:left;}
+       .middle-right{width:38%;margin-left:2%;height:100%;float:left;}
+ 
+       .camero-div{height:100%;}
+       .camero-div > .row{height:100%;}
+       .camero-result{height:100%;}
+
+       .car-trace-div{height:100%;}
+       .car-trace-div > .row{height:94%;}
+       .car-trace-result{height:100%;}
+
+       .panel{border:0;}
    </style>
 <title>Distributed VNF at network edge</title>
 </head>
@@ -23,9 +29,9 @@
      <div src="./ericssonline.png" class="header_line"></div>
    <div class="middle">
 
-      <div style="float:left;height:490px;width:280px;background-image:url('../carlogo3.jpg');background-repeat:no-repeat;background-size:100% 100%;"></div>
+       <div class="middle-left"></div>
 
-       <div class="middle-left">
+       <div class="middle-middle">
          <div class="camero-div container-fluid">
             <div class="row panel panel-blue">
                 <div class="panel-heading">
@@ -33,7 +39,7 @@
                      <h3 class="panel-title">Monitor Window</h3>
                  </div>
                  <div class="camero-result">
-                   <textarea id="carResult" name="carinfo" style="width:100%;height:100%;overflow:auto;" readonly="readonly"></textarea>
+                   <textarea id="carResult" name="carinfo" style="width:100%;height:93%;overflow:auto;border-color:rgba(0, 37, 97, 1);" readonly="readonly"></textarea>
                  </div>
              </div>
          </div>
@@ -48,7 +54,7 @@
                      <h3 class="panel-title">Trace Controller</h3>
                  </div>
                  <div class="car-trace-result">
-                   <textarea id="carTraceResult" name="carTraceResult" style="width:100%;height:90%;overflow:auto;margin-bottom:3%;" readonly="readonly"></textarea>
+                   <textarea id="carTraceResult" name="carTraceResult" style="width:100%;height:90%;overflow:auto;margin-bottom:3%;border-color:rgba(127, 194, 66, 1);" readonly="readonly"></textarea>
                  <div class="car-trace-input input-group">
                      <input id="plateInput" type="text" class="form-control" placeholder="Input Plate to trace">
                      <span class="input-group-btn">
@@ -108,7 +114,7 @@
                   }
                        
                      
-                  if(count > 2){
+                  if(count > 20){
                       $("#carResult").val(rstToShow);
                       count = 0;
                   }else{
@@ -134,7 +140,7 @@
 
                   }
               }catch(e){ 
-                  if(count > 2) {
+                  if(count > 20) {
                       $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
                       count=0;
                   }else{

@@ -59,7 +59,7 @@ function showDevices(devices){
                 var jobTab = "job_"+devices[i].name;
                 var hwinfoTab = "hwinfo_"+devices[i].name;
                 var imgTab = "images_"+devices[i].name; 
-                var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device-div col-xs-3 col-sm-3 col-lg-3 panel panel-primary'; if(i>0) devicesHtml += ' col-md-offset-1">';
+                var devicesHtml = '<div id="'+ devices[i].uuid +'" class="device-div col-xs-3 col-sm-3 col-lg-3 panel panel-blue'; if(i>0) devicesHtml += ' col-md-offset-1">';
                 else devicesHtml += '">';
                 devicesHtml += '<div class="panel-heading"><span class="glyphicon glyphicon-inbox v-left"></span><h3 class="panel-title">'+ devices[i].name +'</h3></div>' +
                         '<table class="table table-striped"><tbody>'+
@@ -78,8 +78,11 @@ function showDevices(devices){
                                 '<tr class="row"><td class="col-xs-4 col-sm-4 col-lg-4">Image:</td><td class="col-xs-8 col-sm-8 col-lg-8">'+ devices[i].job.name+'</td></tr>' +
                                 '</tbody></table>';
                         devicesHtml += '<div class="row" style="padding;0;margin:0;text-align:center;">';
-                                var runningImage= devices[i].Images.find(function(element){return element.name == devices[i].job.name;}); 
-                                '<a class="btn btn-default" role="button" href="'+ runningImage.feedback + "/" + devices[i].name +'" target="_blank">Feedback</a>' +
+                                var runningImage= images.find(function(element){return element.name == devices[i].job.name;}); 
+                                if(runningImage && runningImage.feedback){
+                                    devicesHtml += '<a class="btn btn-default" role="button" href="'+ runningImage.feedback + "/" + devices[i].name +'" target="_blank">Feedback</a>';
+                                }
+                        devicesHtml +=
                                 '<button type="button" class="btn btn-default" onclick="job_stop_click(\''+ devices[i].name +'\',\''+ devices[i].job.name +'\')">Stop</button>' +
                                 '</div>';
                 }
@@ -115,7 +118,7 @@ function dockersHtml(deviceName, dockers){
         for(var j in dockers){
                 dockersTable += '<tr><td>'+ (i++) +'</td><td>'+ dockers[j].name +'</td><td><button class="img-op-btn" onclick="showImgOptModal(\''+deviceName+ '\',\'' + dockers[j].name +'\')" type="button"><span class="glyphicon glyphicon-cog"></span></button></td></tr>';
         }
-        dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5" style="text-align:center"><button type="button" class="btn btn-default btn-lg" style="width:60%;" onclick="add_image_btn_click(\''+ deviceName +'\')"><span class="glyphicon glyphicon-plus-sign"><input type="hidden" value="'+ deviceName +'"></span><span style="margin-left:10%;">Add</span></button></td></tr>';
+        dockersTable += '<tr ondragover="allowDrop(event)" ondrop="drop(event)"><td colspan="5" style="text-align:center"><button type="button" class="btn btn-default btn-lg" style="width:40%;padding:5px;" onclick="add_image_btn_click(\''+ deviceName +'\')"><span class="glyphicon glyphicon-plus-sign"><input type="hidden" value="'+ deviceName +'"></span><span style="margin-left:10%;">Add</span></button></td></tr>';
         dockersTable += '</tbody></table>';
         return dockersTable;
 }
@@ -123,7 +126,7 @@ function dockersHtml(deviceName, dockers){
 function showDockerImages(dockerimages){
         $("#dockerimagesContainer").empty();
         for (var i=0;i<dockerimages.length;i++){
-                var htmlText = '<div id="'+ dockerimages[i].name+'" class="image-div panel';
+                var htmlText = '<div id="'+ dockerimages[i].name+'" class="image-div panel panel-green';
                 htmlText += '" draggable="true" ondragstart="drag(event)">';
                 htmlText += '<div class="panel-heading" ondblclick="editImage(\'' + dockerimages[i].name +'\')"><span class="glyphicon glyphicon-dashboard v-left"></span><h3 class="panel-title">'+ dockerimages[i].name+'</h3></div>';
                 htmlText += '</div>';
