@@ -127,17 +127,18 @@
                       var location = platesLocation.substring(platesLocation.lastIndexOf("-") + 1);
                       var regexp = new RegExp("\\w*" + plate + "\\w*", "ig");
                       var traceHistory = n.toUTCString() + "\t" + location;
-                      while( (tmp = regexp.exec(platesLocation)) != null){
-                          traceHistory += "\n\t" + tmp; 
+                      if( platesLocation.indexOf(plate) > -1 ){
+                          while( (tmp = regexp.exec(platesLocation)) != null){
+                              traceHistory += "\n\t" + tmp; 
+                          }
+                          if(tracedCount < 20){
+                              traceHistory += "\n" + $("#carTraceResult").val();   
+                          }else{
+                              tracedCount = 0;
+                          }
+                          tracedCount++;
+                          $("#carTraceResult").val(traceHistory);
                       }
-                      if(tracedCount < 20){
-                          traceHistory += "\n" + $("#carTraceResult").val();   
-                      }else{
-                          tracedCount = 0;
-                      }
-                      tracedCount++;
-                      $("#carTraceResult").val(traceHistory);
-
                   }
               }catch(e){ 
                   if(count > 20) {
