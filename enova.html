@@ -4,6 +4,7 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"></link>
+   <link href="bootstrap.min.css" rel="stylesheet"></link>
    <link href="enova.css" rel="stylesheet"></link>
    <style type="text/css">
        
@@ -15,11 +16,11 @@
         #dockerimagesContainer .panel{padding:0;margin-bottom:5px;}
 
         /*.images-div{min-height:500px;}*/
-        #devicesContainer{width:60%;float:left;}
-        #devicesContainer .panel{min-width:350px;padding:0;margin:5px 5px;}
-        .device-div{height:420px}
+        #devicesContainer{width:68%;float:left;}
+        #devicesContainer .panel{min-width:400px;padding:0;margin:5px 5px;}
+        .device-div{min-height:485px}
 
-        .photo-div{float:right;height:100%;width:20%;background-image:url('enovalogo.png');background-repeat:repeat;background-size:100% 100%;}
+        .photo-div{float:right;height:100%;width:18%;background-image:url('enovalogo.png');background-repeat:repeat;background-size:100% 100%;}
 
         .input-group{margin:5px 0px;}
    </style>
@@ -240,7 +241,7 @@
            $.ajax({
                   type: "POST",
                   url: serverurl + "/job/" + devName + "/" + escape(imgName) + "/start",
-                  complete: function(){refreshPage();}
+                  complete: function(){ setTimeout(refreshPage, 5000); }
               });
            $("#imgOptModal").modal('hide');
         }
@@ -291,7 +292,7 @@
             $.ajax({
                   type: "DELETE",
                   url: serverurl + "/job/" + deviceName + "/" + escape(jobName) + "/stop",
-                  complete: function(){}
+                  complete: function(){setTimeout(refreshPage, 5000);}
               });
         }
 
