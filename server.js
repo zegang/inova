@@ -114,4 +114,9 @@ app.get('/download/:imageid',function(req, res){
 //    console.log(map)  
 //})  
 
+app.get('/car2',function(req, res){
+   res.writeHead(200, {"Content-Type": "text/html"});
+   fs.readFile("./car2.html", function(err,data){ res.end(data);});
+})
+
 app.listen(8020);

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+   <link href="../enova.css" rel="stylesheet" />
+   <style type="text/css">
+       .middle-left{width:20%;height:100%;float:left;background-image:url('../carlogo3.jpg');background-repeat:no-repeat;background-size:100% 100%;}
+       .middle-middle{width:38%;margin-left:2%;height:100%;float:left;}
+       .middle-right{width:38%;margin-left:2%;height:100%;float:left;}
+ 
+       .camero-div{height:100%;}
+       .camero-div > .row{height:100%;}
+       .camero-result{height:100%;}
+
+       .car-trace-div{height:100%;}
+       .car-trace-div > .row{height:94%;}
+       .car-trace-result{height:100%;}
+
+       .panel{border:0;}
+   </style>
+<title>Distributed VNF at network edge</title>
+</head>
+<body>
+    <div class="header page-header container-fluid">
+        <h1><div class="eIconLogo"></div><span class="ericsson_font">Distributed VNF at network edge</span></h1>
+    </div>
+     <div src="./ericssonline.png" class="header_line"></div>
+   <div class="middle" style="background-image:url(map.png);background-size:cover;background-repeat:no-repeat">
+	<div style="position:relative;left:560px;top:150px;border:1px solid red;width:60px;height:60px;background-image:url(webcam.jpeg);background-size:cover" data-toggle="popover" title="A" data-content="TTTTT"></div>
+	<div style="font-size:40px;position:relative;left:560px;top:350px;color:red;" class="glyphicon glyphicon-camera blink" data-toggle="popover" title="A" data-content="TTTTT"></div>
+
+   <div>
+
+   <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+   <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+   <script>
+       $(function() {
+           $('[data-toggle="popover"]').popover()
+           setInterval(function(){
+               $('.blink').fadeOut(50).fadeIn(50);
+	   },100);
+        })
+   </script>
+</body>
+</html>
