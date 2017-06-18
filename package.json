@@ -19,5 +19,9 @@
   "homepage": "https://github.com/zegang/inova#readme",
   "devDependencies": {
     "express": "^4.14.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1"
   }
 }

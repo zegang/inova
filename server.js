@@ -3,6 +3,8 @@ var express = require('express');
 var app = express();
 var fs = require("fs");
 
+app.use(express.static('./'));
+
 var devices = [
    {"name": "droid", "uuid": "1475133249668276300",
     "HWInfo":{
@@ -93,6 +95,21 @@ app.get('/download/:imageid',function(req, res){
     var file = fs.createWriteStream("./download/" + req.params.imageid + ".tar.gz");
     res.pipe(file);
 })  
+
+//app.get('/fonts/:fontfile',function(req, res){
+//    var id = req.params.fontfile;
+//    var filetype = id.substring( id.lastIndexOf(".")+1 );
+//    var contType = "";
+//    switch(filetype){
+//        case "woff": contType="application/font-woff";break;
+//        case "woff2": contType="application/font-woff2";break;
+//        case "tff": contType="font/truetype";break;
+//        default: contType="";
+//    }
+//    res.writeHead(200, {"Content-Type": contType});
+//    fs.readFile("./fonts/"+  req.params.fontfile, function(err,data){ res.end(data);});
+//    res.send()
+//})  
 
 //app.get('/devices/:id',function(req, res){ 
 //    res.set({'Content-Type':'text/json','Encodeing':'utf8'});  

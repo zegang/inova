@@ -1,6 +1,6 @@
 var devices = [];
 var images = [];
-var serverurl = "http://146.11.24.216:8010";
+var serverurl = "http://146.11.24.138:8010";
 
 function _devicesSort(dev1,dev2){
     return dev1.name > dev2.name;
