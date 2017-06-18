@@ -47,6 +47,11 @@ app.get('/enova.js',function(req, res){
    fs.readFile("./enova.js", function(err,data){ res.end(data);});
 })
 
+app.get('/car.js',function(req, res){
+   res.writeHead(200, {"Content-Type": "text/javascript"});
+   fs.readFile("./car.js", function(err,data){ res.end(data);});
+})
+
 app.get('/:resourceid',function(req, res){
    //res.writeHead(200, {"Content-Type": "image/png"});
    var id = req.params.resourceid;
