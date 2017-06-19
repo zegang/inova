@@ -1,4 +1,3 @@
-count = 0;
 isontrace = false;
 plate="";
 tracedCount = 0;
@@ -24,7 +23,6 @@ function switchTrace(){
 }
 
 function updateResult(result){
-   var oldR = $("#carResult").val();
    var n = new Date();
    if(result){
       try{
@@ -37,14 +35,6 @@ function updateResult(result){
           }else{
           }
                
-             
-          if(count > 20){
-              $("#carResult").val(rstToShow);
-              count = 0;
-          }else{
-              $("#carResult").val(rstToShow + "\n" + oldR);
-              count++;
-          }
 
           if(isontrace){
               var platesLocation= resJson.job.result.substring(resJson.job.result.indexOf("-")+1);
@@ -66,13 +56,6 @@ function updateResult(result){
               }
           }
       }catch(e){ 
-          if(count > 20) {
-              $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
-              count=0;
-          }else{
-              $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
-              count++;
-          }
       }
    }
 }
