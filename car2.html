@@ -10,7 +10,11 @@
        .middle-middle{width:68%;margin-left:1%;height:100%;float:left;}
        .middle-right{width:17%;margin-left:1%;height:100%;float:left;}
 
-       .car-trace-div{height:100%;}
+       .camero-div{height:45%;}
+       .camero-div > .row{height:94%;}
+       .camero-result{height:100%;}
+
+       .car-trace-div{height:45%;margin-top:20px;}
        .car-trace-div > .row{height:94%;}
        .car-trace-result{height:100%;}
 
@@ -32,6 +36,19 @@
 	</div>
 
 	<div class="middle-right">
+
+	  <div class="camero-div container-fluid">
+	   <div class="row panel panel-blue">
+	     <div class="panel-heading">
+		<span class="glyphicon glyphicon-facetime-video v-left"></span>
+ 		<h3 class="panel-title">Monitor Window</h3>
+	      </div> 
+	      <div class="camero-result"> 
+		<textarea id="carResult" name="carinfo" style="width:100%;height:94%;overflow:auto;border-color:rgba(0, 37, 97, 1);" readonly="readonly"></textarea>
+	      </div>
+	    </div>
+	   </div>
+           
            <div class="car-trace-div container-fluid">
             <div class="row panel panel-green">
                 <div class="panel-heading">
