@@ -39,7 +39,7 @@ function updateResult(result){
           }
                
              
-          if(count > 20){
+          if(count > 10){
               $("#carResult").val(rstToShow);
               count = 0;
           }else{
@@ -56,7 +56,7 @@ function updateResult(result){
                   while( (tmp = regexp.exec(platesLocation)) != null){
                       traceHistory += "\n\t" + tmp; 
                   }
-                  if(tracedCount < 20){
+                  if(tracedCount < 10){
                       traceHistory += "\n" + $("#carTraceResult").val();   
                   }else{
                       tracedCount = 0;
@@ -67,7 +67,7 @@ function updateResult(result){
               }
           }
       }catch(e){ 
-          if(count > 20) {
+          if(count > 10) {
               $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
               count=0;
           }else{
