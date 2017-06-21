@@ -10,6 +10,7 @@ function switchTrace(){
       plate = "";
       tracedCount = 0;
       isontrace = false;
+      alertOnMap("");
    }else{
       plate =  $("#plateInput").val().trim();
       if(plate == ""){
@@ -88,10 +89,11 @@ function refreshPage(){
 }
 
 function alertOnMap(str){
-    var tmp = str.toLowerCase();
-    if(tmp.indexOf("north") > -1){blinkCamera("#north");return};
-    if(tmp.indexOf("south") > -1){blinkCamera("#south");return};
-    if(tmp.indexOf("east") > -1){blinkCamera("#east");return};
+    var tmp = str.trim().toLowerCase();
+    if(tmp.indexOf("beidird") > -1){blinkCamera("#north");return};
+    if(tmp.indexOf("jingzhongrd") > -1){blinkCamera("#south");return};
+    if(tmp.indexOf("tianshanrd") > -1){blinkCamera("#east");return};
+    blinkCamera("");
 }
 
 var blinker;

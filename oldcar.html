@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="../bootstrap.min.css" rel="stylesheet" />
+   <link href="../enova.css" rel="stylesheet" />
+   <style type="text/css">
+       .middle-left{width:18%;height:99%;float:left;background-image:url('../carlogo3.jpg');background-repeat:no-repeat;background-size:100% 100%;}
+       .middle-middle{width:40%;margin-left:1%;height:100%;float:left;}
+       .middle-right{width:40%;margin-left:1%;height:100%;float:left;}
+ 
+       .camero-div{height:100%;}
+       .camero-div > .row{height:100%;}
+       .camero-result{height:100%;}
+
+       .car-trace-div{height:100%;}
+       .car-trace-div > .row{height:94%;}
+       .car-trace-result{height:100%;}
+
+       .panel{border:0;}
+       .car-trace-input{margin-top:-2%;}
+   </style>
+<title>Distributed VNF at network edge</title>
+</head>
+<body>
+    <div class="header page-header container-fluid">
+        <h1><div class="eIconLogo"></div><span class="ericsson-font">Distributed VNF at network edge</span></h1>
+    </div>
+     <div src="./ericssonline.png" class="header_line"></div>
+   <div class="middle">
+
+       <div class="middle-left"></div>
+
+       <div class="middle-middle">
+         <div class="camero-div container-fluid">
+            <div class="row panel panel-blue">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-facetime-video v-left"></span>
+                     <h3 class="panel-title">Monitor Window</h3>
+                 </div>
+                 <div class="camero-result">
+                   <textarea id="carResult" name="carinfo" style="width:100%;height:94%;overflow:auto;border-color:rgba(0, 37, 97, 1);" readonly="readonly"></textarea>
+                 </div>
+             </div>
+         </div>
+       </div>
+
+
+      <div class="middle-right">
+           <div class="car-trace-div container-fluid">
+            <div class="row panel panel-green">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-facetime-video v-left"></span>
+                     <h3 class="panel-title">Trace Controller</h3>
+                 </div>
+                 <div class="car-trace-result">
+                   <textarea id="carTraceResult" name="carTraceResult" style="width:100%;height:93%;overflow:auto;margin-bottom:3%;border-color:rgba(127, 194, 66, 1);" readonly="readonly"></textarea>
+                 <div class="car-trace-input input-group">
+                     <input id="plateInput" type="text" class="form-control" placeholder="Input Plate to trace">
+                     <span class="input-group-btn">
+                         <button id="traceBtn" class="btn btn-danger" type="button" onclick="switchTrace()">Trace</button>
+                     </span>
+                </div>
+                </div>
+`
+             </div>
+         </div>
+      </div>
+
+
+   <div>
+
+   <script src="../jquery.min.js"></script>
+   <script src="../bootstrap.min.js"></script>
+   <script src="../enova.js"></script>
+   <script type="text/javascript">
+       count = 0;
+       isontrace = false;
+       plate="";
+       tracedCount = 0;
+
+       function switchTrace(){
+           if(isontrace){
+              $("#plateInput").removeAttr("disabled");
+              $("#traceBtn").html("Trace");
+              plate = "";
+              tracedCount = 0;
+              isontrace = false;
+           }else{
+              plate =  $("#plateInput").val().trim();
+              if(plate == ""){
+                 isontrace = false;
+                 return;
+              }
+              $("#plateInput").attr("disabled","disabled");
+              $("#traceBtn").html("Stop");
+              tracedCount = 0;
+              isontrace = true;
+          }
+       }
+
+       function updateResult(result){
+           var oldR = $("#carResult").val();
+           var n = new Date();
+           if(result){
+              try{
+                  var resJson = $.parseJSON(result);
+                  var firstL = resJson.job.result.indexOf("-");
+                  var secondL = resJson.job.result.indexOf("-",firstL+1);
+                  var rstToShow = n.toUTCString() + "\t";
+                  if ( secondL > -1 && firstL != secondL){
+                      rstToShow += resJson.job.result.substring(firstL + 1, secondL).trim();
+                  }else{
+                  }
+                       
+                     
+                  if(count > 20){
+                      $("#carResult").val(rstToShow);
+                      count = 0;
+                  }else{
+                      $("#carResult").val(rstToShow + "\n" + oldR);
+                      count++;
+                  }
+
+                  if(isontrace){
+                      var platesLocation= resJson.job.result.substring(resJson.job.result.indexOf("-")+1);
+                      var location = platesLocation.substring(platesLocation.lastIndexOf("-") + 1);
+                      var regexp = new RegExp("\\w*" + plate + "\\w*", "ig");
+                      var traceHistory = n.toUTCString() + "\t" + location;
+                      if( platesLocation.indexOf(plate) > -1 ){
+                          while( (tmp = regexp.exec(platesLocation)) != null){
+                              traceHistory += "\n\t" + tmp; 
+                          }
+                          if(tracedCount < 20){
+                              traceHistory += "\n" + $("#carTraceResult").val();   
+                          }else{
+                              tracedCount = 0;
+                          }
+                          tracedCount++;
+                          $("#carTraceResult").val(traceHistory);
+                      }
+                  }
+              }catch(e){ 
+                  if(count > 20) {
+                      $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
+                      count=0;
+                  }else{
+                      $("#carResult").val(n.toUTCString() + "\n" + result + "\n\n" + oldR);
+                      count++;
+                  }
+              }
+           }
+       }
+
+        function refreshPage(){
+            var href = window.location.href;
+            var deviceId = href.substring(href.lastIndexOf('/') + 1);
+            var url = serverurl + "/device/" + deviceId;
+            $.ajax({
+                url: url,
+                success: function(result) {updateResult(result.trim())}
+            });
+       }
+
+        $(document).ready(function(){
+                refreshPage();
+                setInterval(refreshPage, 5000); 
+	});
+             
+   </script>
+</body>
+</html>
